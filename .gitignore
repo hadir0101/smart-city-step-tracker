@@ -1,0 +1,23 @@
+# Virtual environment
+venv/
+
+# Database
+steps.db
+
+# Apple Health export (large binary)
+export.zip
+export.xml
+export_cda.xml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
