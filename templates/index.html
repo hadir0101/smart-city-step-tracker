@@ -66,6 +66,84 @@
   <canvas id="dailyChart"></canvas>
 </div>
 
+<div class="chart-card detection-card">
+  <div class="chart-title">Step Detection — Algorithm Validation</div>
+
+  <div class="detection-tabs">
+    <button class="tab-btn active" onclick="switchTab('csv')">CSV File</button>
+    <button class="tab-btn" onclick="switchTab('live')">Live API</button>
+  </div>
+
+  <!-- CSV mode -->
+  <div id="tab-csv" class="tab-panel">
+    <div class="detection-row">
+      <label>File</label>
+      <input id="csv-file" type="text" value="phyphox_data.csv" placeholder="phyphox_data.csv" />
+      <label>Date (optional)</label>
+      <input id="csv-date" type="text" value="2026-04-15" placeholder="2026-04-15" />
+      <button class="run-btn" onclick="runCsv()">Run Detection</button>
+    </div>
+  </div>
+
+  <!-- Live mode -->
+  <div id="tab-live" class="tab-panel" style="display:none">
+    <div class="detection-row">
+      <label>Phone IP</label>
+      <input id="live-ip" type="text" placeholder="192.168.1.42 or 127.0.0.1" />
+      <label>Duration (s)</label>
+      <input id="live-dur" type="number" value="30" min="5" max="60" style="width:70px"/>
+      <label>Date (optional)</label>
+      <input id="live-date" type="text" value="2026-04-15" placeholder="2026-04-15" />
+      <button class="run-btn" onclick="runLive()">Start Live</button>
+    </div>
+    <div id="live-countdown" class="countdown" style="display:none">
+      <div class="progress-track" style="margin-top:0.75rem">
+        <div class="progress-fill" id="live-bar" style="width:0%; background:var(--accent)"></div>
+      </div>
+      <div class="stat-sub" id="live-status">Connecting...</div>
+    </div>
+  </div>
+
+  <!-- Results (shared) -->
+  <div id="detection-results" style="display:none">
+    <div class="det-divider"></div>
+    <div class="det-metrics">
+      <div class="det-metric">
+        <div class="stat-label">Steps Detected</div>
+        <div class="stat-value blue" id="det-steps">—</div>
+      </div>
+      <div class="det-metric">
+        <div class="stat-label">Cadence</div>
+        <div class="stat-value green" id="det-cadence">—</div>
+        <div class="stat-sub">steps / min</div>
+      </div>
+      <div class="det-metric">
+        <div class="stat-label">Duration</div>
+        <div class="stat-value orange" id="det-duration">—</div>
+        <div class="stat-sub">seconds</div>
+      </div>
+      <div class="det-metric">
+        <div class="stat-label">Sampling Rate</div>
+        <div class="stat-value" id="det-fs" style="color:var(--text)">—</div>
+        <div class="stat-sub">Hz</div>
+      </div>
+    </div>
+
+    <div id="det-comparison" style="display:none">
+      <div class="det-divider"></div>
+      <div class="det-compare-row">
+        <span class="stat-label">Apple Health</span>
+        <span id="det-apple" class="det-apple-val">—</span>
+        <span class="stat-label">Cadence</span>
+        <span id="det-diff">—</span>
+        <span id="det-verdict" class="verdict-badge">—</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="detection-error" class="det-error" style="display:none"></div>
+</div>
+
 <div class="footer">
   Data source: iPhone Health App · Accelerometer-based step detection · Smart City Project B1
 </div>

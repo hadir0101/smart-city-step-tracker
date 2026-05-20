@@ -1,3 +1,4 @@
+import os
 from flask import Blueprint, jsonify, render_template, request
 from datetime import datetime
 from database import get_db, PARIS
@@ -86,6 +87,74 @@ def stats():
         'goal_days':     sum(1 for s in totals if s >= 10000),
         'peak_hour':     f"{peak_hour['hour']}:00" if peak_hour else 'N/A',
     })
+
+
+# ── Section 1: CSV ingestion ──────────────────────────────────────────────────
+
+@bp.route('/api/ingest/csv')
+def ingest_csv():
+    """
+    Load a Phyphox CSV export, detect steps, compare against Apple Health.
+
+    GET /api/ingest/csv
+        ?file=phyphox_data.csv   (default)
+        &date=2026-04-15         (optional — Apple Health comparison)
+        &hour_start=8            (optional)
+        &hour_end=10             (optional)
+    """
+    from ingestion.csv_ingest import run
+
+    csv_path   = request.args.get('file', 'phyphox_data.csv')
+    date_str   = request.args.get('date')
+    hour_start = request.args.get('hour_start', type=int)
+    hour_end   = request.args.get('hour_end',   type=int)
+
+    try:
+        output = run(csv_path, date_str, hour_start, hour_end, save_plot=False)
+    except FileNotFoundError as e:
+        return jsonify({'error': str(e)}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+    return jsonify(output)
+
+
+# ── Section 2: Live ingestion ─────────────────────────────────────────────────
+
+@bp.route('/api/ingest/live', methods=['POST'])
+def ingest_live():
+    """
+    Stream live accelerometer data from Phyphox, detect steps, compare against Apple Health.
+
+    POST /api/ingest/live
+    {
+        "ip":         "192.168.1.42",   required — Phyphox device IP
+        "duration":   30,               seconds to record (max 60, default 30)
+        "date":       "2026-04-15",     optional — Apple Health comparison
+        "hour_start": 8,                optional
+        "hour_end":   10                optional
+    }
+    """
+    from ingestion.live_ingest import run
+
+    body     = request.get_json(silent=True) or {}
+    phone_ip = body.get('ip')
+    if not phone_ip:
+        return jsonify({'error': 'Missing "ip" — provide the Phyphox device IP'}), 400
+
+    duration_s = min(int(body.get('duration', 30)), 60)
+    date_str   = body.get('date')
+    hour_start = body.get('hour_start')
+    hour_end   = body.get('hour_end')
+
+    output = run(phone_ip, duration_s, date_str, hour_start, hour_end, save_plot=False)
+    if output is None:
+        return jsonify({
+            'error': f'Could not collect data from {phone_ip}. '
+                     'Ensure Phyphox is running with remote access enabled on the same WiFi.'
+        }), 502
+
+    return jsonify(output)
 
 
 @bp.route('/api/ingest', methods=['POST'])

@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StepTrack — Final Presentation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #0d1117;
+    --surface: #161b22;
+    --card:    #1c2330;
+    --blue:    #58a6ff;
+    --green:   #3fb950;
+    --orange:  #d29922;
+    --red:     #f85149;
+    --text:    #e6edf3;
+    --muted:   #8b949e;
+    --border:  rgba(88,166,255,0.15);
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #111;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 12px;
+  }
+
+  /* ── Slide ── */
+  .slide {
+    width: 1280px;
+    height: 720px;
+    background: var(--bg);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    page-break-after: always;
+    flex-shrink: 0;
+  }
+
+  .slide-num {
+    position: absolute;
+    top: 36px; right: 48px;
+    font-size: 72px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    user-select: none;
+  }
+
+  .tag {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 6px;
+  }
+
+  /* ── Slide 1: Title ── */
+  .s1 {
+    background: linear-gradient(135deg, #0d1117 0%, #0d1f33 100%);
+    justify-content: flex-end;
+    padding: 0;
+  }
+
+  .s1-content {
+    padding: 64px 72px;
+    width: 65%;
+  }
+
+  .s1-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 20px;
+  }
+
+  .s1-title {
+    font-size: 64px;
+    font-weight: 800;
+    line-height: 1.05;
+    margin-bottom: 32px;
+    color: #fff;
+  }
+
+  .s1-box {
+    border: 1px solid rgba(88,166,255,0.3);
+    border-radius: 8px;
+    padding: 20px 28px;
+    display: inline-block;
+    background: rgba(88,166,255,0.06);
+  }
+
+  .s1-box strong { color: var(--blue); }
+  .s1-box p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+  .s1-orb {
+    position: absolute;
+    right: 80px; top: 50%;
+    transform: translateY(-50%);
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    border: 2px solid rgba(88,166,255,0.3);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .s1-orb::before {
+    content: '';
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    border: 2px solid rgba(88,166,255,0.5);
+    background: rgba(88,166,255,0.06);
+  }
+
+  /* ── Common slide layout ── */
+  .s-pad { padding: 52px 72px; }
+
+  .slide-title {
+    font-size: 40px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+
+  .slide-sub {
+    font-size: 15px;
+    color: var(--muted);
+    margin-bottom: 36px;
+  }
+
+  /* ── Cards ── */
+  .cards { display: flex; gap: 20px; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 24px;
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .card.blue::before   { background: var(--blue); }
+  .card.green::before  { background: var(--green); }
+  .card.orange::before { background: var(--orange); }
+  .card.red::before    { background: var(--red); }
+
+  .card-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .card-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+
+  .card-body {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .card-body li { margin-left: 14px; margin-bottom: 4px; }
+
+  /* ── Slide 2: What We Built ── */
+  .built-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .built-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 22px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .built-num {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .built-num.blue   { background: rgba(88,166,255,0.15); color: var(--blue); }
+  .built-num.green  { background: rgba(63,185,80,0.15);  color: var(--green); }
+  .built-num.orange { background: rgba(210,153,34,0.15); color: var(--orange); }
+  .built-num.red    { background: rgba(248,81,73,0.15);  color: var(--red); }
+
+  .built-text h4 { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .built-text p  { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* ── Slide 3: Architecture ── */
+  .arch-flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 32px;
+  }
+
+  .arch-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    flex: 1;
+    text-align: center;
+    position: relative;
+  }
+
+  .arch-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .arch-box.blue::before   { background: var(--blue); }
+  .arch-box.green::before  { background: var(--green); }
+  .arch-box.orange::before { background: var(--orange); }
+  .arch-box.red::before    { background: var(--red); }
+  .arch-box.purple::before { background: #a371f7; }
+
+  .arch-box h4 { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .arch-box p  { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+  .arch-arrow {
+    color: var(--muted);
+    font-size: 22px;
+    padding: 0 8px;
+    flex-shrink: 0;
+  }
+
+  .tech-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .tech-pill {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .tech-pill span { color: var(--blue); font-weight: 600; }
+
+  /* ── Slide 4: Database ── */
+  .db-layout { display: flex; gap: 24px; align-items: flex-start; }
+
+  .db-table {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    flex: 1.2;
+  }
+
+  .db-table table { width: 100%; border-collapse: collapse; }
+  .db-table th {
+    background: rgba(88,166,255,0.1);
+    padding: 10px 16px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+    text-align: left;
+  }
+  .db-table td {
+    padding: 10px 16px;
+    font-size: 13px;
+    color: var(--muted);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    font-family: 'Courier New', monospace;
+  }
+  .db-table td:first-child { color: var(--text); font-weight: 500; }
+  .db-table td.pk  { color: var(--orange); }
+  .db-table td.key { color: var(--green); }
+
+  .db-facts { flex: 1; display: flex; flex-direction: column; gap: 14px; }
+
+  .db-fact {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+  }
+
+  .db-fact .val  { font-size: 28px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
+  .db-fact .lbl  { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+  /* ── Slide 5: Two Pipelines ── */
+  .pipeline-row { display: flex; gap: 20px; }
+
+  .pipeline {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pipeline::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+
+  .pipeline.csv::before  { background: var(--blue); }
+  .pipeline.live::before { background: var(--green); }
+
+  .pipeline h3 { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .pipeline .pipeline-sub { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+
+  .pipeline-steps { display: flex; flex-direction: column; gap: 8px; }
+
+  .pipeline-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .pipeline-step .dot {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .pipeline.csv  .dot { background: rgba(88,166,255,0.15); color: var(--blue); }
+  .pipeline.live .dot { background: rgba(63,185,80,0.15);  color: var(--green); }
+
+  .endpoint-badge {
+    display: inline-block;
+    background: rgba(88,166,255,0.1);
+    border: 1px solid rgba(88,166,255,0.2);
+    border-radius: 4px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    color: var(--blue);
+    margin-top: 16px;
+  }
+
+  .endpoint-badge.green {
+    background: rgba(63,185,80,0.1);
+    border-color: rgba(63,185,80,0.2);
+    color: var(--green);
+  }
+
+  /* ── Slide 6: Algorithm ── */
+  .algo-layout { display: flex; gap: 24px; }
+
+  .algo-pipeline {
+    flex: 1.1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .algo-step {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .algo-step .icon {
+    width: 32px; height: 32px;
+    border-radius: 6px;
+    background: rgba(88,166,255,0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .algo-step h5 { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+  .algo-step p  { font-size: 11px; color: var(--muted); }
+
+  .algo-arrow-down {
+    text-align: center;
+    color: var(--muted);
+    font-size: 16px;
+    margin: -4px 0;
+  }
+
+  .algo-code {
+    flex: 1;
+    background: #010409;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 22px;
+    font-family: 'Courier New', monospace;
+    font-size: 12.5px;
+    line-height: 1.7;
+    overflow: hidden;
+  }
+
+  .code-comment { color: #6e7681; }
+  .code-kw      { color: #ff7b72; }
+  .code-fn      { color: #d2a8ff; }
+  .code-str     { color: #a5d6ff; }
+  .code-num     { color: #79c0ff; }
+  .code-var     { color: #e6edf3; }
+
+  /* ── Slide 7: Validation ── */
+  .valid-layout { display: flex; gap: 24px; }
+
+  .valid-verdicts {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .verdict-card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 20px 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .verdict-badge-big {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+
+  .verdict-badge-big.good       { background: rgba(63,185,80,0.15);  color: var(--green);  border: 1px solid rgba(63,185,80,0.3); }
+  .verdict-badge-big.acceptable { background: rgba(88,166,255,0.15); color: var(--blue);   border: 1px solid rgba(88,166,255,0.3); }
+  .verdict-badge-big.tuning     { background: rgba(248,81,73,0.15);  color: var(--red);    border: 1px solid rgba(248,81,73,0.3); }
+
+  .verdict-text h4 { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 3px; }
+  .verdict-text p  { font-size: 12px; color: var(--muted); }
+
+  .valid-result {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px 24px;
+  }
+
+  .valid-result h4 { font-size: 14px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 20px; }
+
+  .result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .result-row:last-child { border-bottom: none; }
+  .result-row .lbl { font-size: 13px; color: var(--muted); }
+  .result-row .val { font-size: 20px; font-weight: 700; }
+  .result-row .val.blue   { color: var(--blue); }
+  .result-row .val.green  { color: var(--green); }
+  .result-row .val.orange { color: var(--orange); }
+
+  /* ── Slide 8: Dashboard ── */
+  .dashboard-preview {
+    background: #0a0e1a;
+    border: 1px solid rgba(99,179,237,0.15);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+
+  .dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(99,179,237,0.15);
+  }
+
+  .dash-logo { font-size: 14px; font-weight: 600; color: #e2e8f0; }
+  .dash-logo span { color: #63b3ed; }
+
+  .live-dot-sm {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #68d391;
+    display: inline-block;
+    margin-right: 5px;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .dash-live { font-size: 10px; color: #68d391; font-family: monospace; }
+
+  .dash-cards { display: flex; gap: 12px; margin-bottom: 14px; }
+
+  .dash-card {
+    flex: 1;
+    background: #111827;
+    border: 1px solid rgba(99,179,237,0.15);
+    border-radius: 8px;
+    padding: 12px 14px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .dash-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .dash-card.b::before { background: #63b3ed; }
+  .dash-card.g::before { background: #68d391; }
+  .dash-card.o::before { background: #f6ad55; }
+  .dash-card.r::before { background: #fc8181; }
+
+  .dash-card .dl { font-size: 9px; color: #718096; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 3px; }
+  .dash-card .dv { font-size: 22px; font-weight: 300; }
+  .dash-card .dv.b { color: #63b3ed; }
+  .dash-card .dv.g { color: #68d391; }
+  .dash-card .dv.o { color: #f6ad55; }
+  .dash-card .dv.r { color: #fc8181; }
+
+  /* detection card preview */
+  .det-preview {
+    background: #111827;
+    border: 1px solid rgba(99,179,237,0.15);
+    border-radius: 8px;
+    padding: 14px 18px;
+  }
+
+  .det-tabs-sm { display: flex; gap: 8px; margin-bottom: 12px; }
+  .det-tab-sm {
+    font-size: 10px;
+    padding: 3px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(99,179,237,0.2);
+    color: #718096;
+  }
+  .det-tab-sm.active { background: #63b3ed; border-color: #63b3ed; color: #0a0e1a; }
+
+  .det-metrics-sm { display: flex; gap: 20px; align-items: center; }
+  .det-m { text-align: center; }
+  .det-m .dl { font-size: 8px; color: #718096; text-transform: uppercase; }
+  .det-m .dv { font-size: 18px; font-weight: 300; }
+
+  .verdict-sm {
+    margin-left: auto;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 700;
+    background: rgba(63,185,80,0.15);
+    color: #3fb950;
+    border: 1px solid rgba(63,185,80,0.3);
+  }
+
+  /* ── Slide 9: Roadmap ── */
+  .roadmap { display: flex; gap: 0; align-items: flex-start; position: relative; margin-top: 20px; }
+
+  .roadmap-line {
+    position: absolute;
+    top: 20px; left: 20px; right: 20px;
+    height: 2px;
+    background: linear-gradient(to right, var(--green) 50%, rgba(88,166,255,0.3) 50%);
+    z-index: 0;
+  }
+
+  .roadmap-item { flex: 1; padding: 0 8px; position: relative; z-index: 1; }
+
+  .roadmap-dot {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+    font-size: 16px;
+  }
+
+  .roadmap-dot.done { background: var(--green); color: #000; }
+  .roadmap-dot.now  { background: var(--blue);  color: #000; }
+
+  .roadmap-card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 20px;
+    border-top: 3px solid;
+  }
+
+  .roadmap-card.done  { border-color: var(--green); }
+  .roadmap-card.now   { border-color: var(--blue); }
+
+  .roadmap-card .rc-label {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+
+  .roadmap-card.done .rc-label  { color: var(--green); }
+  .roadmap-card.now  .rc-label  { color: var(--blue); }
+
+  .roadmap-card h4 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+  .roadmap-card ul { list-style: none; }
+  .roadmap-card li { font-size: 12px; color: var(--muted); margin-bottom: 5px; padding-left: 14px; position: relative; }
+  .roadmap-card li::before { content: '·'; position: absolute; left: 0; }
+
+  /* ── Slide 10: Thank You ── */
+  .s10 {
+    background: linear-gradient(135deg, #0d1117 0%, #0d1f33 100%);
+    justify-content: center;
+    align-items: center;
+  }
+
+  .s10-inner { text-align: center; }
+
+  .s10-title {
+    font-size: 72px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+
+  .s10-sub {
+    font-size: 20px;
+    color: var(--blue);
+    margin-bottom: 52px;
+  }
+
+  .s10-stats {
+    display: flex;
+    gap: 52px;
+    justify-content: center;
+    margin-bottom: 48px;
+  }
+
+  .s10-stat .val { font-size: 44px; font-weight: 800; }
+  .s10-stat .val.blue   { color: var(--blue); }
+  .s10-stat .val.green  { color: var(--green); }
+  .s10-stat .val.orange { color: var(--orange); }
+  .s10-stat .val.red    { color: var(--red); }
+  .s10-stat .lbl { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  .s10-divider { width: 100px; height: 1px; background: var(--border); margin: 0 auto 24px; }
+  .s10-names { font-size: 14px; color: var(--muted); }
+  .s10-names span { color: var(--text); }
+
+  @media print {
+    body { background: none; padding: 0; gap: 0; }
+    .slide { page-break-after: always; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Slide 1: Title ── -->
+<div class="slide s1">
+  <div class="slide-num">01</div>
+  <div class="s1-content">
+    <div class="s1-eyebrow">Smart City Project — B1 · Final Presentation</div>
+    <div class="s1-title">Smartphone Step<br>Detection &amp;<br>Activity Visualization</div>
+    <div class="s1-box">
+      <strong>Hadir Helali</strong> (Project Leader) · <strong>Balkis Karoui</strong>
+      <p>Final Presentation — May 2026</p>
+    </div>
+  </div>
+  <div class="s1-orb"></div>
+</div>
+
+<!-- ── Slide 2: What We Built ── -->
+<div class="slide s-pad">
+  <div class="slide-num">02</div>
+  <div class="tag">Since the Checkpoint</div>
+  <div class="slide-title">What We Built</div>
+  <div class="slide-sub">Four major additions since the April checkpoint presentation</div>
+
+  <div class="built-grid">
+    <div class="built-item">
+      <div class="built-num blue">01</div>
+      <div class="built-text">
+        <h4>SQLite Database</h4>
+        <p>Migrated from parsing XML on every request to a persistent SQLite database. 720 hourly records for April 2026 seeded automatically. UNIQUE constraint prevents duplicates on re-ingest.</p>
+      </div>
+    </div>
+    <div class="built-item">
+      <div class="built-num green">02</div>
+      <div class="built-text">
+        <h4>Two-Pipeline Ingestion Layer</h4>
+        <p>Modular <code>ingestion/</code> package with two independent sections — CSV file export and live Phyphox HTTP API. Both feed the same detection algorithm. Clean REST endpoints for each.</p>
+      </div>
+    </div>
+    <div class="built-item">
+      <div class="built-num orange">03</div>
+      <div class="built-text">
+        <h4>Step Detection Algorithm</h4>
+        <p>Custom scipy-based peak detection on raw accelerometer data. Butterworth low-pass filter removes noise, <code>find_peaks()</code> identifies each footstrike. Works with any phone orientation.</p>
+      </div>
+    </div>
+    <div class="built-item">
+      <div class="built-num red">04</div>
+      <div class="built-text">
+        <h4>Live Validation in Dashboard UI</h4>
+        <p>New Step Detection card in the web dashboard with CSV and Live tabs. Real-time progress bar during collection. GOOD / ACCEPTABLE / NEEDS TUNING verdict based on cadence physiology.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Slide 3: Architecture ── -->
+<div class="slide s-pad">
+  <div class="slide-num">03</div>
+  <div class="tag">System Design</div>
+  <div class="slide-title">Updated Architecture</div>
+  <div class="slide-sub">End-to-end pipeline from raw sensor to web dashboard</div>
+
+  <div class="arch-flow" style="margin-bottom:28px">
+    <div class="arch-box blue">
+      <h4>iPhone Sensor</h4>
+      <p>Phyphox app<br>Linear Acceleration<br>50 Hz sampling</p>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box green">
+      <h4>Ingestion Layer</h4>
+      <p>CSV export path<br>or Live HTTP API<br><code>ingestion/</code> package</p>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box orange">
+      <h4>Detection Algorithm</h4>
+      <p>scipy peak detection<br>Butterworth filter<br><code>step_detection.py</code></p>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box red">
+      <h4>SQLite Database</h4>
+      <p>step_records table<br>Hourly granularity<br><code>database.py</code></p>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box purple">
+      <h4>Web Dashboard</h4>
+      <p>Flask + Chart.js<br>Live detection UI<br><code>routes.py</code></p>
+    </div>
+  </div>
+
+  <div style="margin-bottom:16px">
+    <div class="tag" style="margin-bottom:10px">Tech Stack</div>
+    <div class="tech-row">
+      <div class="tech-pill"><span>Python 3</span> · Core language</div>
+      <div class="tech-pill"><span>Flask</span> · Web server &amp; API</div>
+      <div class="tech-pill"><span>SQLite</span> · Persistent storage</div>
+      <div class="tech-pill"><span>scipy</span> · Signal processing</div>
+      <div class="tech-pill"><span>numpy / pandas</span> · Data processing</div>
+      <div class="tech-pill"><span>Chart.js</span> · Interactive charts</div>
+      <div class="tech-pill"><span>Phyphox</span> · Raw accelerometer</div>
+      <div class="tech-pill"><span>requests</span> · HTTP polling</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Slide 4: Database ── -->
+<div class="slide s-pad">
+  <div class="slide-num">04</div>
+  <div class="tag">Persistent Storage</div>
+  <div class="slide-title">SQLite Database</div>
+  <div class="slide-sub">Replaced in-memory XML parsing with a persistent, queryable database</div>
+
+  <div class="db-layout">
+    <div class="db-table">
+      <table>
+        <thead>
+          <tr>
+            <th>Column</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="pk">id</td><td>INTEGER PK</td><td>Auto-increment primary key</td></tr>
+          <tr><td>start_date</td><td>TEXT</td><td>Original timestamp from sensor</td></tr>
+          <tr><td class="key">date</td><td>TEXT</td><td>YYYY-MM-DD (Europe/Paris TZ)</td></tr>
+          <tr><td class="key">hour</td><td>INTEGER</td><td>Hour of day 0–23 (Paris TZ)</td></tr>
+          <tr><td>steps</td><td>REAL</td><td>Step count for this interval</td></tr>
+          <tr><td>source</td><td>TEXT</td><td>"iPhone", "phyphox", "manual"</td></tr>
+        </tbody>
+      </table>
+      <div style="padding:12px 16px; font-size:11px; color:var(--muted); border-top:1px solid rgba(255,255,255,0.05)">
+        UNIQUE(start_date, source) — prevents duplicate records on re-ingest
+      </div>
+    </div>
+
+    <div class="db-facts">
+      <div class="db-fact">
+        <div class="val" style="color:var(--blue)">720</div>
+        <div class="lbl">Records seeded — April 2026</div>
+      </div>
+      <div class="db-fact">
+        <div class="val" style="color:var(--green)">30</div>
+        <div class="lbl">Days of hourly data</div>
+      </div>
+      <div class="db-fact">
+        <div class="val" style="color:var(--orange)">8,236</div>
+        <div class="lbl">Average daily steps</div>
+      </div>
+      <div class="db-fact">
+        <div class="val" style="color:var(--red)">7</div>
+        <div class="lbl">Days hitting 10k goal</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Slide 5: Two Pipelines ── -->
+<div class="slide s-pad">
+  <div class="slide-num">05</div>
+  <div class="tag">Data Ingestion</div>
+  <div class="slide-title">Two Independent Pipelines</div>
+  <div class="slide-sub">Both sections share the same detection algorithm — only the data source differs</div>
+
+  <div class="pipeline-row">
+    <div class="pipeline csv">
+      <div class="tag" style="color:var(--blue)">Section 1 — CSV File</div>
+      <h3>CSV Ingestion</h3>
+      <div class="pipeline-sub">Phyphox exports a CSV after a recording session. No network required.</div>
+      <div class="pipeline-steps">
+        <div class="pipeline-step"><div class="dot">1</div> Record walking session in Phyphox</div>
+        <div class="pipeline-step"><div class="dot">2</div> Export CSV — share to laptop</div>
+        <div class="pipeline-step"><div class="dot">3</div> <code>load_phyphox()</code> normalises column names</div>
+        <div class="pipeline-step"><div class="dot">4</div> Run <code>detect_steps(path)</code></div>
+        <div class="pipeline-step"><div class="dot">5</div> Return result + cadence verdict</div>
+      </div>
+      <div class="endpoint-badge">GET /api/ingest/csv?file=phyphox_data.csv</div>
+    </div>
+
+    <div class="pipeline live">
+      <div class="tag" style="color:var(--green)">Section 2 — Live API</div>
+      <h3>Live Ingestion</h3>
+      <div class="pipeline-sub">Streams real-time data from the Phyphox HTTP server during walking.</div>
+      <div class="pipeline-steps">
+        <div class="pipeline-step"><div class="dot">1</div> Phone starts Phyphox + Allow remote access</div>
+        <div class="pipeline-step"><div class="dot">2</div> <code>discover_channels()</code> auto-detects buffer names</div>
+        <div class="pipeline-step"><div class="dot">3</div> Poll <code>/get?linX=&lt;t&gt;</code> every 500ms</div>
+        <div class="pipeline-step"><div class="dot">4</div> Accumulate DataFrame, run <code>detect_steps_from_df()</code></div>
+        <div class="pipeline-step"><div class="dot">5</div> Save session CSV + return verdict</div>
+      </div>
+      <div class="endpoint-badge green">POST /api/ingest/live  {"ip": "...", "duration": 30}</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Slide 6: Algorithm ── -->
+<div class="slide s-pad">
+  <div class="slide-num">06</div>
+  <div class="tag">Signal Processing</div>
+  <div class="slide-title">Step Detection Algorithm</div>
+  <div class="slide-sub">Raw accelerometer → filtered signal → peak detection → step count</div>
+
+  <div class="algo-layout">
+    <div class="algo-pipeline">
+      <div class="algo-step">
+        <div class="icon">📡</div>
+        <div>
+          <h5>3-Axis Magnitude</h5>
+          <p>√(ax² + ay² + az²) — removes phone orientation dependency</p>
+        </div>
+      </div>
+      <div class="algo-arrow-down">↓</div>
+      <div class="algo-step">
+        <div class="icon">〰️</div>
+        <div>
+          <h5>Butterworth Low-Pass Filter</h5>
+          <p>Cutoff 3 Hz — walking is 1–2 Hz, noise is higher frequency</p>
+        </div>
+      </div>
+      <div class="algo-arrow-down">↓</div>
+      <div class="algo-step">
+        <div class="icon">▲</div>
+        <div>
+          <h5>Peak Detection</h5>
+          <p>scipy find_peaks — min gap 0.3s, threshold = mean + 0.4σ</p>
+        </div>
+      </div>
+      <div class="algo-arrow-down">↓</div>
+      <div class="algo-step">
+        <div class="icon">✅</div>
+        <div>
+          <h5>Result</h5>
+          <p>Step count · Cadence (steps/min) · Duration · Sampling rate</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="algo-code">
+      <div class="code-comment"># 1. Compute magnitude</div>
+      <div><span class="code-var">df</span>[<span class="code-str">'magnitude'</span>] = np.sqrt(
+  <span class="code-var">df</span>[<span class="code-str">'ax'</span>]**<span class="code-num">2</span> + <span class="code-var">df</span>[<span class="code-str">'ay'</span>]**<span class="code-num">2</span> + <span class="code-var">df</span>[<span class="code-str">'az'</span>]**<span class="code-num">2</span>)</div>
+      <br>
+      <div class="code-comment"># 2. Low-pass filter (3 Hz cutoff)</div>
+      <div><span class="code-var">b</span>, <span class="code-var">a</span> = <span class="code-fn">butter</span>(<span class="code-num">4</span>, <span class="code-num">3.0</span> / (<span class="code-num">0.5</span> * <span class="code-var">fs</span>), btype=<span class="code-str">'low'</span>)</div>
+      <div><span class="code-var">df</span>[<span class="code-str">'filtered'</span>] = <span class="code-fn">filtfilt</span>(<span class="code-var">b</span>, <span class="code-var">a</span>, <span class="code-var">df</span>[<span class="code-str">'magnitude'</span>])</div>
+      <br>
+      <div class="code-comment"># 3. Detect peaks (each peak = 1 step)</div>
+      <div><span class="code-var">threshold</span> = <span class="code-var">df</span>[<span class="code-str">'filtered'</span>].mean() + <span class="code-var">df</span>[<span class="code-str">'filtered'</span>].std() * <span class="code-num">0.4</span></div>
+      <div><span class="code-var">peaks</span>, _ = <span class="code-fn">find_peaks</span>(</div>
+      <div>  <span class="code-var">df</span>[<span class="code-str">'filtered'</span>],</div>
+      <div>  height=<span class="code-var">threshold</span>,</div>
+      <div>  distance=<span class="code-kw">int</span>(<span class="code-var">fs</span> * <span class="code-num">0.3</span>)  <span class="code-comment"># min 0.3s between steps</span></div>
+      <div>)</div>
+      <br>
+      <div class="code-comment"># 4. Results</div>
+      <div><span class="code-var">steps</span>   = <span class="code-kw">len</span>(<span class="code-var">peaks</span>)</div>
+      <div><span class="code-var">cadence</span> = <span class="code-var">steps</span> / (<span class="code-var">duration</span> / <span class="code-num">60.0</span>)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Slide 7: Validation ── -->
+<div class="slide s-pad">
+  <div class="slide-num">07</div>
+  <div class="tag">Algorithm Validation</div>
+  <div class="slide-title">Cadence-Based Verdict System</div>
+  <div class="slide-sub">Validates detection accuracy using physiological walking norms</div>
+
+  <div class="valid-layout">
+    <div class="valid-verdicts">
+      <div class="verdict-card">
+        <div class="verdict-badge-big good">GOOD</div>
+        <div class="verdict-text">
+          <h4>80–140 steps/min</h4>
+          <p>Normal walking pace. Detection is accurate and reliable.</p>
+        </div>
+      </div>
+      <div class="verdict-card">
+        <div class="verdict-badge-big acceptable">ACCEPTABLE</div>
+        <div class="verdict-text">
+          <h4>60–80 or 140–180 steps/min</h4>
+          <p>Slow stroll or brisk walk. Slightly outside typical range but plausible.</p>
+        </div>
+      </div>
+      <div class="verdict-card">
+        <div class="verdict-badge-big tuning">NEEDS TUNING</div>
+        <div class="verdict-text">
+          <h4>&lt; 60 or &gt; 180 steps/min</h4>
+          <p>Outside physiological range. Adjust detection threshold or filter cutoff.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="valid-result">
+      <h4>Demo Result — Dummy Dataset</h4>
+      <div class="result-row">
+        <span class="lbl">Steps detected</span>
+        <span class="val blue">216</span>
+      </div>
+      <div class="result-row">
+        <span class="lbl">Session duration</span>
+        <span class="val orange">120 s</span>
+      </div>
+      <div class="result-row">
+        <span class="lbl">Cadence</span>
+        <span class="val green">108 steps/min</span>
+      </div>
+      <div class="result-row">
+        <span class="lbl">Sampling rate</span>
+        <span class="val" style="color:var(--muted)">50 Hz</span>
+      </div>
+      <div class="result-row">
+        <span class="lbl">Apple Health (Apr 15)</span>
+        <span class="val" style="color:var(--muted); font-size:14px">7,700 steps (day ref)</span>
+      </div>
+      <div class="result-row" style="border-bottom:none">
+        <span class="lbl">Verdict</span>
+        <span class="verdict-badge-big good" style="font-size:13px">GOOD</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Slide 8: Dashboard ── -->
+<div class="slide s-pad">
+  <div class="slide-num">08</div>
+  <div class="tag">Live Demo</div>
+  <div class="slide-title">Dashboard — New Features</div>
+  <div class="slide-sub">Step Detection card added to the existing web dashboard</div>
+
+  <div class="dashboard-preview">
+    <div class="dash-header">
+      <div class="dash-logo"><span>Step</span>Track · Smart City Activity Dashboard</div>
+      <div class="dash-live"><span class="live-dot-sm"></span>LIVE DATA</div>
+    </div>
+
+    <div class="dash-cards">
+      <div class="dash-card b"><div class="dl">Avg Daily Steps</div><div class="dv b">8,236</div></div>
+      <div class="dash-card g"><div class="dl">Best Day</div><div class="dv g">13,200</div></div>
+      <div class="dash-card o"><div class="dl">Days Tracked</div><div class="dv o">30</div></div>
+      <div class="dash-card r"><div class="dl">Goal Days</div><div class="dv r">7</div></div>
+    </div>
+
+    <div class="det-preview">
+      <div style="font-size:9px; color:#718096; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:10px">Step Detection — Algorithm Validation</div>
+      <div class="det-tabs-sm">
+        <div class="det-tab-sm active">CSV File</div>
+        <div class="det-tab-sm">Live API</div>
+      </div>
+      <div class="det-metrics-sm">
+        <div class="det-m"><div class="dl">Steps</div><div class="dv" style="color:#63b3ed">216</div></div>
+        <div class="det-m"><div class="dl">Cadence</div><div class="dv" style="color:#68d391">108/min</div></div>
+        <div class="det-m"><div class="dl">Duration</div><div class="dv" style="color:#f6ad55">120s</div></div>
+        <div class="det-m"><div class="dl">Apple Health</div><div class="dv" style="color:#718096; font-size:13px">7,700 ref</div></div>
+        <div class="verdict-sm">GOOD</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cards" style="margin-top:14px">
+    <div class="card blue" style="padding:16px 20px">
+      <div class="card-label">Mock Server</div>
+      <div style="font-size:13px; color:var(--muted)">Simulates Phyphox HTTP API from CSV — demonstrates the live pipeline without phone dependency</div>
+    </div>
+    <div class="card green" style="padding:16px 20px">
+      <div class="card-label">Auto Channel Discovery</div>
+      <div style="font-size:13px; color:var(--muted)">Queries <code>/config</code> to find correct buffer names — works with any Phyphox experiment automatically</div>
+    </div>
+    <div class="card orange" style="padding:16px 20px">
+      <div class="card-label">Session Logging</div>
+      <div style="font-size:13px; color:var(--muted)">Every live session saved as timestamped CSV — reproducible, replay anytime without phone</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Slide 9: Roadmap ── -->
+<div class="slide s-pad">
+  <div class="slide-num">09</div>
+  <div class="tag">Project Status</div>
+  <div class="slide-title">Roadmap — All Phases Complete</div>
+  <div class="slide-sub">From data pipeline to live detection — full end-to-end prototype delivered</div>
+
+  <div class="roadmap">
+    <div class="roadmap-line"></div>
+
+    <div class="roadmap-item">
+      <div class="roadmap-dot done">✓</div>
+      <div class="roadmap-card done">
+        <div class="rc-label">Done — Phase 1</div>
+        <h4>Data Pipeline</h4>
+        <ul>
+          <li>iPhone Health export</li>
+          <li>XML parsing</li>
+          <li>Step aggregation</li>
+          <li>Timezone conversion</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="roadmap-dot done">✓</div>
+      <div class="roadmap-card done">
+        <div class="rc-label">Done — Phase 2</div>
+        <h4>Web Dashboard</h4>
+        <ul>
+          <li>Flask backend</li>
+          <li>Chart.js frontend</li>
+          <li>REST API endpoints</li>
+          <li>Responsive UI</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="roadmap-dot done">✓</div>
+      <div class="roadmap-card done">
+        <div class="rc-label">Done — Phase 3</div>
+        <h4>Step Detection</h4>
+        <ul>
+          <li>scipy peak detection</li>
+          <li>Raw accelerometer</li>
+          <li>SQLite persistence</li>
+          <li>Cadence validation</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="roadmap-item">
+      <div class="roadmap-dot done">✓</div>
+      <div class="roadmap-card done">
+        <div class="rc-label">Done — Phase 4</div>
+        <h4>Full Demo</h4>
+        <ul>
+          <li>Live ingestion pipeline</li>
+          <li>Mock server fallback</li>
+          <li>Dashboard integration</li>
+          <li>Final presentation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Slide 10: Thank You ── -->
+<div class="slide s10">
+  <div class="slide-num" style="color:rgba(255,255,255,0.03)">10</div>
+  <div class="s10-inner">
+    <div class="s10-title">Thank You</div>
+    <div class="s10-sub">Questions &amp; Feedback Welcome</div>
+
+    <div class="s10-stats">
+      <div class="s10-stat">
+        <div class="val blue">720</div>
+        <div class="lbl">DB records seeded</div>
+      </div>
+      <div class="s10-stat">
+        <div class="val green">216</div>
+        <div class="lbl">Steps detected (demo)</div>
+      </div>
+      <div class="s10-stat">
+        <div class="val orange">108</div>
+        <div class="lbl">Cadence (steps/min)</div>
+      </div>
+      <div class="s10-stat">
+        <div class="val red">6</div>
+        <div class="lbl">New API endpoints</div>
+      </div>
+    </div>
+
+    <div class="s10-divider"></div>
+    <div class="s10-names">
+      <span>Hadir Helali</span> · <span>Balkis Karoui</span> &nbsp;|&nbsp; Smart City Project B1 &nbsp;|&nbsp; May 2026
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
