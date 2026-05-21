@@ -11,11 +11,11 @@
 
 *A full-stack accelerometer step tracker — from raw iPhone sensor data to a live, colour-coded activity dashboard*
 
-**Team:** Hadir Helali & Balkis Karoui — Smart City Project B1
+
 
 ---
 
-![StepTrack Dashboard](docs/dashboard.png)
+![StepTrack Dashboard](dashboard.png)
 
 </div>
 
@@ -188,8 +188,7 @@ smart-city-step-tracker/
 │   └── app.js                    # Chart.js + fetch API client
 ├── templates/
 │   └── index.html                # Dashboard HTML template
-├── docs/
-│   └── dashboard.png             # Dashboard screenshot
+├── dashboard.png                 # Dashboard screenshot
 ├── SmartCity_DataAnalysis.ipynb  # Exploratory analysis (Colab)
 ├── requirements.txt
 └── steps.db                      # SQLite database (auto-created)
@@ -225,8 +224,3 @@ All timestamps are converted to **Europe/Paris** timezone before storage.
 
 ---
 
-<div align="center">
-
-*Smart City Project B1 · 2026*
-
-</div>
