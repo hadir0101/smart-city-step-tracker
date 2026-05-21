@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StepTrack — Full Project Documentation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg:      #0d1117;
+    --surface: #161b22;
+    --card:    #1c2330;
+    --blue:    #58a6ff;
+    --green:   #3fb950;
+    --orange:  #d29922;
+    --red:     #f85149;
+    --purple:  #a371f7;
+    --text:    #e6edf3;
+    --muted:   #8b949e;
+    --border:  rgba(88,166,255,0.15);
+    --code-bg: #010409;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 0;
+  }
+
+  /* ── Cover Page ── */
+  .cover {
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(160deg, #0d1117 0%, #0d1f33 60%, #0d1117 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 80px 100px;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+  }
+
+  .cover::before {
+    content: '';
+    position: absolute;
+    right: -80px; top: 50%;
+    transform: translateY(-50%);
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    border: 1px solid rgba(88,166,255,0.12);
+  }
+
+  .cover::after {
+    content: '';
+    position: absolute;
+    right: 20px; top: 50%;
+    transform: translateY(-50%);
+    width: 340px; height: 340px;
+    border-radius: 50%;
+    border: 1px solid rgba(88,166,255,0.2);
+    background: rgba(88,166,255,0.03);
+  }
+
+  .cover-eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 24px;
+  }
+
+  .cover-title {
+    font-size: 72px;
+    font-weight: 700;
+    line-height: 1.05;
+    color: #fff;
+    margin-bottom: 16px;
+    max-width: 700px;
+  }
+
+  .cover-title span { color: var(--blue); }
+
+  .cover-subtitle {
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--muted);
+    margin-bottom: 52px;
+    max-width: 560px;
+  }
+
+  .cover-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-left: 2px solid rgba(88,166,255,0.3);
+    padding-left: 20px;
+  }
+
+  .cover-meta-row { font-size: 14px; color: var(--muted); }
+  .cover-meta-row span { color: var(--text); font-weight: 500; }
+
+  .cover-badge {
+    position: absolute;
+    bottom: 60px; left: 100px;
+    display: flex;
+    gap: 12px;
+  }
+
+  .badge {
+    background: rgba(88,166,255,0.08);
+    border: 1px solid rgba(88,166,255,0.2);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: var(--blue);
+    font-weight: 500;
+  }
+
+  /* ── Page wrapper ── */
+  .page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 60px 80px;
+  }
+
+  /* ── Section headers ── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+
+  .section-intro {
+    font-size: 16px;
+    color: var(--muted);
+    margin-bottom: 36px;
+    max-width: 700px;
+  }
+
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 12px;
+    margin-top: 36px;
+  }
+
+  h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    margin-top: 20px;
+  }
+
+  p {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 14px;
+    line-height: 1.75;
+  }
+
+  p strong { color: var(--text); font-weight: 600; }
+
+  ul, ol {
+    margin-left: 20px;
+    margin-bottom: 14px;
+  }
+
+  li {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    line-height: 1.6;
+  }
+
+  li strong { color: var(--text); }
+
+  /* ── Divider ── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 52px 0;
+  }
+
+  /* ── Cards ── */
+  .card-grid {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .card-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .card-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .card-grid.cols-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .card.blue::before   { background: var(--blue); }
+  .card.green::before  { background: var(--green); }
+  .card.orange::before { background: var(--orange); }
+  .card.red::before    { background: var(--red); }
+  .card.purple::before { background: var(--purple); }
+
+  .card-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .card h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+    margin-top: 0;
+  }
+
+  .card p {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 0;
+    line-height: 1.6;
+  }
+
+  .stat-val {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-val.blue   { color: var(--blue); }
+  .stat-val.green  { color: var(--green); }
+  .stat-val.orange { color: var(--orange); }
+  .stat-val.red    { color: var(--red); }
+
+  /* ── Tables ── */
+  .table-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+
+  thead tr { background: rgba(88,166,255,0.08); }
+
+  th {
+    padding: 12px 18px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue);
+    text-align: left;
+  }
+
+  td {
+    padding: 11px 18px;
+    font-size: 13px;
+    color: var(--muted);
+    border-top: 1px solid rgba(255,255,255,0.04);
+    vertical-align: top;
+  }
+
+  td:first-child { color: var(--text); font-weight: 500; }
+  td code { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--blue); }
+
+  /* ── Code blocks ── */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 24px 28px;
+    overflow-x: auto;
+    margin-bottom: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.8;
+  }
+
+  .kw   { color: #ff7b72; }
+  .fn   { color: #d2a8ff; }
+  .str  { color: #a5d6ff; }
+  .num  { color: #79c0ff; }
+  .cmt  { color: #6e7681; font-style: italic; }
+  .var  { color: #e6edf3; }
+  .op   { color: #ff7b72; }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: rgba(88,166,255,0.1);
+    border: 1px solid rgba(88,166,255,0.15);
+    border-radius: 4px;
+    padding: 2px 7px;
+    color: var(--blue);
+  }
+
+  /* ── Algorithm pipeline visual ── */
+  .algo-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 28px;
+  }
+
+  .algo-step-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    position: relative;
+  }
+
+  .algo-step-card + .algo-step-card { margin-top: 2px; border-radius: 10px; }
+
+  .algo-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .algo-icon.blue   { background: rgba(88,166,255,0.12); }
+  .algo-icon.green  { background: rgba(63,185,80,0.12);  }
+  .algo-icon.orange { background: rgba(210,153,34,0.12); }
+  .algo-icon.purple { background: rgba(163,113,247,0.12);}
+
+  .algo-content h4 { font-size: 15px; font-weight: 600; color: #fff; margin: 0 0 6px 0; }
+  .algo-content p  { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.6; }
+
+  .algo-arrow {
+    text-align: center;
+    color: var(--muted);
+    font-size: 20px;
+    padding: 6px 0;
+    margin-left: 40px;
+  }
+
+  /* ── Signal diagram ── */
+  .signal-demo {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px;
+    margin-bottom: 24px;
+  }
+
+  .signal-demo-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  .signal-rows { display: flex; flex-direction: column; gap: 18px; }
+
+  .signal-row { display: flex; align-items: center; gap: 16px; }
+
+  .signal-label {
+    width: 110px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+    text-align: right;
+  }
+
+  .signal-bar-wrap {
+    flex: 1;
+    height: 42px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* SVG wave drawn inline */
+  .signal-bar-wrap svg { width: 100%; height: 100%; }
+
+  .signal-note {
+    width: 180px;
+    font-size: 11px;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  /* ── Verdict cards ── */
+  .verdict-row { display: flex; gap: 14px; margin-bottom: 24px; }
+
+  .verdict-card {
+    flex: 1;
+    background: var(--card);
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .verdict-badge {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    margin-top: 2px;
+  }
+
+  .verdict-badge.good       { background: rgba(63,185,80,0.15);  color: var(--green);  border: 1px solid rgba(63,185,80,0.3); }
+  .verdict-badge.acceptable { background: rgba(88,166,255,0.15); color: var(--blue);   border: 1px solid rgba(88,166,255,0.3); }
+  .verdict-badge.tuning     { background: rgba(248,81,73,0.15);  color: var(--red);    border: 1px solid rgba(248,81,73,0.3); }
+
+  .verdict-text h4 { font-size: 14px; font-weight: 600; color: #fff; margin: 0 0 4px 0; }
+  .verdict-text p  { font-size: 12px; color: var(--muted); margin: 0; }
+
+  /* ── Architecture flow ── */
+  .arch-flow {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 28px;
+  }
+
+  .arch-box {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 16px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .arch-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .arch-box.blue::before   { background: var(--blue); }
+  .arch-box.green::before  { background: var(--green); }
+  .arch-box.orange::before { background: var(--orange); }
+  .arch-box.red::before    { background: var(--red); }
+  .arch-box.purple::before { background: var(--purple); }
+
+  .arch-box h4 { font-size: 13px; font-weight: 700; color: #fff; margin: 0 0 5px; }
+  .arch-box p  { font-size: 11px; color: var(--muted); margin: 0; line-height: 1.5; }
+
+  .arch-arrow {
+    display: flex;
+    align-items: center;
+    color: var(--muted);
+    font-size: 18px;
+    padding: 0 6px;
+    flex-shrink: 0;
+  }
+
+  /* ── File tree ── */
+  .file-tree {
+    background: var(--code-bg);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 24px 28px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 2;
+    margin-bottom: 24px;
+  }
+
+  .file-tree .dir  { color: var(--blue); font-weight: 500; }
+  .file-tree .file { color: var(--text); }
+  .file-tree .note { color: var(--muted); margin-left: 12px; }
+  .file-tree .indent { margin-left: 20px; display: block; }
+  .file-tree .indent2 { margin-left: 40px; display: block; }
+
+  /* ── Inline highlight ── */
+  .hl-blue   { color: var(--blue); font-weight: 600; }
+  .hl-green  { color: var(--green); font-weight: 600; }
+  .hl-orange { color: var(--orange); font-weight: 600; }
+  .hl-red    { color: var(--red); font-weight: 600; }
+
+  /* ── Info box ── */
+  .info-box {
+    background: rgba(88,166,255,0.06);
+    border: 1px solid rgba(88,166,255,0.2);
+    border-left: 3px solid var(--blue);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+
+  .info-box p { margin: 0; font-size: 13px; }
+
+  .warn-box {
+    background: rgba(210,153,34,0.06);
+    border: 1px solid rgba(210,153,34,0.2);
+    border-left: 3px solid var(--orange);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+
+  .warn-box p { margin: 0; font-size: 13px; color: var(--muted); }
+
+  /* ── Endpoint table ── */
+  .endpoint { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+
+  .method {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .method.get  { background: rgba(63,185,80,0.15);  color: var(--green);  border: 1px solid rgba(63,185,80,0.3); }
+  .method.post { background: rgba(88,166,255,0.15); color: var(--blue);   border: 1px solid rgba(88,166,255,0.3); }
+
+  .endpoint-path {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  .endpoint-desc { font-size: 13px; color: var(--muted); }
+
+  /* ── Page break ── */
+  .page-break { page-break-before: always; }
+
+  /* ── Print ── */
+  @media print {
+    body { background: var(--bg) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .cover { min-height: auto; padding: 60px 80px 80px; page-break-after: always; }
+    .page { padding: 50px 70px; }
+    .divider { page-break-after: avoid; }
+    h2 { page-break-after: avoid; }
+    h3 { page-break-after: avoid; }
+    pre { page-break-inside: avoid; }
+    .card-grid { page-break-inside: avoid; }
+    .arch-flow { page-break-inside: avoid; }
+    .signal-demo { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- COVER                                                              -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-eyebrow">Smart City Project B1 · Full Technical Documentation</div>
+  <div class="cover-title">Step<span>Track</span><br>Project Documentation</div>
+  <div class="cover-subtitle">Smartphone-based step detection, live sensor ingestion, and activity visualization — end-to-end</div>
+  <div class="cover-meta">
+    <div class="cover-meta-row">Authors &nbsp;&nbsp;&nbsp;<span>Hadir Helali &amp; Balkis Karoui</span></div>
+    <div class="cover-meta-row">Course &nbsp;&nbsp;&nbsp;&nbsp;<span>Smart City Project — Group B1</span></div>
+    <div class="cover-meta-row">Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>May 2026</span></div>
+    <div class="cover-meta-row">Version &nbsp;&nbsp;&nbsp;<span>Final — all 4 phases complete</span></div>
+  </div>
+  <div class="cover-badge">
+    <div class="badge">Python 3</div>
+    <div class="badge">Flask</div>
+    <div class="badge">SQLite</div>
+    <div class="badge">scipy</div>
+    <div class="badge">Phyphox</div>
+    <div class="badge">Chart.js</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- 1. PROJECT OVERVIEW                                                -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="section-label">Section 01</div>
+  <h2>Project Overview</h2>
+  <p class="section-intro">What StepTrack does, why it was built, and how all the pieces fit together at a high level.</p>
+
+  <p>StepTrack is a full-stack web application that combines <strong>historical Apple Health data</strong> with <strong>custom real-time step detection</strong> from raw accelerometer data. It was built across four sequential phases, starting from simple data parsing and ending with a live sensor pipeline and algorithm validation.</p>
+
+  <p>The core motivation is to go beneath the iPhone's built-in pedometer black box. Instead of trusting an opaque step count, StepTrack collects raw 3-axis accelerometer readings from the Phyphox app and runs its own signal-processing algorithm to detect each footstrike — producing a step count that can be audited, tuned, and validated.</p>
+
+  <h3>The Four Phases</h3>
+
+  <div class="card-grid cols-2">
+    <div class="card blue">
+      <div class="card-label">Phase 1 — Done</div>
+      <h4>Data Pipeline</h4>
+      <p>Parse Apple Health XML export. Convert timestamps to Europe/Paris timezone. Aggregate steps by date and hour. Load into SQLite database.</p>
+    </div>
+    <div class="card green">
+      <div class="card-label">Phase 2 — Done</div>
+      <h4>Web Dashboard</h4>
+      <p>Flask web server with REST API. Chart.js interactive bar charts. Responsive dark-navy UI. Live-updating stat cards.</p>
+    </div>
+    <div class="card orange">
+      <div class="card-label">Phase 3 — Done</div>
+      <h4>Step Detection Algorithm</h4>
+      <p>Custom scipy peak detection on raw accelerometer data. Butterworth low-pass filter. Cadence-based validation system.</p>
+    </div>
+    <div class="card red">
+      <div class="card-label">Phase 4 — Done</div>
+      <h4>Live Ingestion &amp; Demo</h4>
+      <p>Modular ingestion package. Live Phyphox HTTP API streaming. Mock server for demos. Dashboard integration with verdict badges.</p>
+    </div>
+  </div>
+
+  <h3>End-to-End Architecture</h3>
+
+  <div class="arch-flow">
+    <div class="arch-box blue">
+      <h4>iPhone Sensor</h4>
+      <p>Phyphox app<br>Linear Acceleration<br>~50 Hz raw data</p>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box green">
+      <h4>Ingestion Layer</h4>
+      <p>CSV export path<br>or Live HTTP API<br><code style="font-size:10px">ingestion/</code> package</p>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box orange">
+      <h4>Detection Algorithm</h4>
+      <p>Filter → magnitude<br>→ peak detection<br><code style="font-size:10px">step_detection.py</code></p>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box red">
+      <h4>SQLite Database</h4>
+      <p>step_records table<br>Hourly granularity<br><code style="font-size:10px">database.py</code></p>
+    </div>
+    <div class="arch-arrow">→</div>
+    <div class="arch-box purple">
+      <h4>Web Dashboard</h4>
+      <p>Flask + Chart.js<br>Detection UI<br><code style="font-size:10px">routes.py</code></p>
+    </div>
+  </div>
+
+  <h3>Tech Stack</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Technology</th><th>Role</th><th>Version</th></tr></thead>
+      <tbody>
+        <tr><td>Python 3</td><td>Core language for all backend and algorithm code</td><td>3.12</td></tr>
+        <tr><td>Flask</td><td>Web framework — serves the dashboard and REST API</td><td>3.1.3</td></tr>
+        <tr><td>SQLite</td><td>Embedded database — stores all step records as a single file</td><td>built-in</td></tr>
+        <tr><td>scipy</td><td>Signal processing — Butterworth filter and peak detection</td><td>≥ 1.13</td></tr>
+        <tr><td>numpy</td><td>Array maths — vector magnitude, numerical operations</td><td>2.4.4</td></tr>
+        <tr><td>pandas</td><td>DataFrame handling for CSV loading and data manipulation</td><td>3.0.2</td></tr>
+        <tr><td>requests</td><td>HTTP client — polls the Phyphox phone API</td><td>≥ 2.32</td></tr>
+        <tr><td>matplotlib</td><td>Generates 2-panel signal + peak detection plots</td><td>≥ 3.8</td></tr>
+        <tr><td>Chart.js</td><td>Interactive bar charts rendered in the browser</td><td>4.4.1 CDN</td></tr>
+        <tr><td>Phyphox (iOS)</td><td>iPhone app that streams raw accelerometer data over HTTP</td><td>any</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- end page -->
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- 2. FILE STRUCTURE                                                  -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="page page-break">
+  <div class="section-label">Section 02</div>
+  <h2>File Structure</h2>
+  <p class="section-intro">Every file and what it is responsible for.</p>
+
+  <div class="file-tree">
+    <span><span class="dir">smart-city-step-tracker/</span></span>
+    <span class="indent"><span class="file">app.py</span><span class="note">— Entry point. Starts Flask, calls init_db() and seed_from_xml()</span></span>
+    <span class="indent"><span class="file">database.py</span><span class="note">— DB connection helper, schema creation, XML data loader</span></span>
+    <span class="indent"><span class="file">routes.py</span><span class="note">— All REST API endpoints as a Flask Blueprint</span></span>
+    <span class="indent"><span class="file">step_detection.py</span><span class="note">— Core algorithm: load CSV → filter → find_peaks → results</span></span>
+    <br>
+    <span class="indent"><span class="dir">ingestion/</span><span class="note">— Modular data ingestion package</span></span>
+    <span class="indent2"><span class="file">__init__.py</span><span class="note">— Package marker (empty)</span></span>
+    <span class="indent2"><span class="file">csv_ingest.py</span><span class="note">— Section 1: run full detection pipeline on a CSV file</span></span>
+    <span class="indent2"><span class="file">live_ingest.py</span><span class="note">— Section 2: stream from Phyphox HTTP API, then detect</span></span>
+    <span class="indent2"><span class="file">mock_server.py</span><span class="note">— Fake Phyphox server — streams phyphox_data.csv over HTTP</span></span>
+    <br>
+    <span class="indent"><span class="dir">templates/</span></span>
+    <span class="indent2"><span class="file">index.html</span><span class="note">— Single-page dashboard (Jinja2 template)</span></span>
+    <br>
+    <span class="indent"><span class="dir">static/</span></span>
+    <span class="indent2"><span class="file">style.css</span><span class="note">— Dark navy design system, detection card styles</span></span>
+    <span class="indent2"><span class="file">app.js</span><span class="note">— Chart.js setup, detection UI, API calls</span></span>
+    <br>
+    <span class="indent"><span class="file">phyphox_data.csv</span><span class="note">— Simulated walking session (6,000 samples, 120s, 50 Hz)</span></span>
+    <span class="indent"><span class="file">steps.db</span><span class="note">— SQLite database (720 records, April 2026)</span></span>
+    <span class="indent"><span class="file">requirements.txt</span><span class="note">— All Python dependencies with pinned versions</span></span>
+    <span class="indent"><span class="file">StepTrack_Final_Presentation.html</span><span class="note">— 10-slide HTML presentation</span></span>
+    <span class="indent"><span class="file">StepTrack_Documentation.html</span><span class="note">— This file</span></span>
+  </div>
+
+</div><!-- end page -->
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- 3. DATABASE                                                        -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="page page-break">
+  <div class="section-label">Section 03</div>
+  <h2>Database</h2>
+  <p class="section-intro">How step data is stored, structured, and protected against duplicates.</p>
+
+  <p>The project uses <strong>SQLite</strong> — a file-based database that requires no server installation. Everything lives in a single file called <code>steps.db</code>. This is appropriate for a prototype: the file can be copied, emailed, opened in any SQLite browser, or version-controlled.</p>
+
+  <h3>Schema — step_records table</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Column</th><th>Type</th><th>Constraint</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>id</code></td><td>INTEGER</td><td>PRIMARY KEY AUTOINCREMENT</td><td>Unique row identifier, assigned automatically</td></tr>
+        <tr><td><code>start_date</code></td><td>TEXT</td><td>NOT NULL</td><td>Original timestamp string from the Apple Health XML (e.g. "2026-04-15 08:12:03 +0200")</td></tr>
+        <tr><td><code>date</code></td><td>TEXT</td><td>NOT NULL</td><td>YYYY-MM-DD in Europe/Paris timezone — used for grouping and daily queries</td></tr>
+        <tr><td><code>hour</code></td><td>INTEGER</td><td>NOT NULL</td><td>Hour of day 0–23 in Europe/Paris timezone — enables hourly breakdown</td></tr>
+        <tr><td><code>steps</code></td><td>REAL</td><td>NOT NULL</td><td>Step count for this interval (REAL allows fractional values from Apple Health)</td></tr>
+        <tr><td><code>source</code></td><td>TEXT</td><td>—</td><td>"iPhone", "phyphox", or "manual" — tracks where each record came from</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="info-box">
+    <p><strong>UNIQUE(start_date, source)</strong> — If you run the ingestion script twice, duplicate records are silently skipped (INSERT OR IGNORE). The same raw data can never appear twice in the database.</p>
+  </div>
+
+  <h3>Key Functions in database.py</h3>
+
+  <div class="card-grid cols-3">
+    <div class="card blue">
+      <div class="card-label">get_db()</div>
+      <p>Opens a SQLite connection with <code>row_factory = sqlite3.Row</code> so results can be accessed like dictionaries (e.g. <code>row['steps']</code>).</p>
+    </div>
+    <div class="card green">
+      <div class="card-label">init_db()</div>
+      <p>Creates the <code>step_records</code> table using CREATE TABLE IF NOT EXISTS — safe to call on every startup. Does nothing if the table already exists.</p>
+    </div>
+    <div class="card orange">
+      <div class="card-label">seed_from_xml()</div>
+      <p>Parses <code>export.xml</code> from Apple Health, converts all timestamps to Paris time, and inserts records. Skips entirely if the DB already has data.</p>
+    </div>
+  </div>
+
+  <h3>Data in the Database</h3>
+
+  <div class="card-grid cols-4">
+    <div class="card blue"><div class="stat-val blue">720</div><div class="card-label">Records seeded</div><p>30 days × 24 hours = 720 hourly rows for April 2026</p></div>
+    <div class="card green"><div class="stat-val green">30</div><div class="card-label">Days of data</div><p>Full month of April 2026 from Apple Health export</p></div>
+    <div class="card orange"><div class="stat-val orange">8,236</div><div class="card-label">Avg daily steps</div><p>Averaged across all 30 days in the dataset</p></div>
+    <div class="card red"><div class="stat-val red">7</div><div class="card-label">Goal days (10k)</div><p>Days where the daily total exceeded 10,000 steps</p></div>
+  </div>
+
+</div><!-- end page -->
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- 4. STEP DETECTION ALGORITHM — FULL EXPLANATION                    -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="page page-break">
+  <div class="section-label">Section 04</div>
+  <h2>Step Detection Algorithm</h2>
+  <p class="section-intro">A complete explanation of how raw accelerometer numbers become a step count — the science, the code, and the design choices.</p>
+
+  <!-- ── Why raw accelerometer? ── -->
+  <h3>Why Raw Accelerometer Data?</h3>
+  <p>The iPhone's built-in pedometer uses a dedicated motion coprocessor (Apple M-series chip) and a proprietary closed algorithm — you receive only a final step count. There is no way to inspect or validate what it does internally.</p>
+  <p>By capturing the raw 3-axis linear acceleration signal from Phyphox, we can implement detection from scratch, understand every parameter, audit every decision, and tune the algorithm to match observed walking behavior.</p>
+
+  <!-- ── What is the signal? ── -->
+  <h3>Understanding the Raw Signal</h3>
+  <p>The accelerometer measures <strong>linear acceleration</strong> along three axes simultaneously:</p>
+  <ul>
+    <li><strong>ax</strong> — left/right acceleration (m/s²)</li>
+    <li><strong>ay</strong> — forward/backward acceleration (m/s²)</li>
+    <li><strong>az</strong> — up/down acceleration (m/s²)</li>
+  </ul>
+  <p>Each walking step produces a brief burst of acceleration as the foot strikes the ground and the body's weight transfers. This shows up as a <strong>sharp spike</strong> in the signal. The problem is that the spike direction depends entirely on how the phone is oriented in your pocket or hand — a step might appear mostly in ax on one person and mostly in az on another.</p>
+
+  <!-- ── STEP 1 ── -->
+  <h3>Step 1 — 3-Axis Vector Magnitude</h3>
+
+  <div class="algo-step-card">
+    <div class="algo-icon blue">📡</div>
+    <div class="algo-content">
+      <h4>Why: Remove orientation dependency</h4>
+      <p>Instead of choosing one axis, we compute the overall strength of acceleration across all three axes at once. This is the Euclidean vector magnitude — the length of the 3D acceleration vector.</p>
+    </div>
+  </div>
+
+  <pre><span class="cmt"># For every sample, compute the total acceleration magnitude</span>
+<span class="var">df</span>[<span class="str">'magnitude'</span>] = <span class="fn">np</span>.<span class="fn">sqrt</span>(
+    <span class="var">df</span>[<span class="str">'ax'</span>]**<span class="num">2</span> + <span class="var">df</span>[<span class="str">'ay'</span>]**<span class="num">2</span> + <span class="var">df</span>[<span class="str">'az'</span>]**<span class="num">2</span>
+)</pre>
+
+  <p>The result is a single number per sample that answers "how much total acceleration is happening right now?" — regardless of which direction. The phone can be upside down, sideways, or flat, and each footstrike still produces the same magnitude spike.</p>
+
+  <div class="info-box">
+    <p><strong>Mathematical intuition:</strong> If ax=0, ay=0, az=5 (step upward), magnitude = 5. If ax=3, ay=4, az=0 (step sideways), magnitude = 5. Same step, same result — orientation removed.</p>
+  </div>
+
+  <!-- ── STEP 2 ── -->
+  <h3>Step 2 — Butterworth Low-Pass Filter</h3>
+
+  <div class="algo-step-card">
+    <div class="algo-icon green">〰️</div>
+    <div class="algo-content">
+      <h4>Why: Remove noise without distorting the walking signal</h4>
+      <p>Raw accelerometer data contains high-frequency noise — electrical sensor noise, micro-vibrations from the phone case, even interference from the phone's own components. Walking itself is a slow, rhythmic process. We need to separate these two things.</p>
+    </div>
+  </div>
+
+  <p><strong>Walking frequency:</strong> A typical adult takes 80–140 steps per minute, which is 1.3–2.3 steps per second, or <strong>1.3–2.3 Hz</strong>. The raw signal noise lives mostly above 5–10 Hz. We choose a cutoff of <strong>3 Hz</strong> — this keeps the full walking signal and discards everything faster.</p>
+
+  <p><strong>Why Butterworth?</strong> The Butterworth filter has a maximally flat frequency response in the passband — meaning it does not amplify or distort the walking signal at all before the cutoff, then smoothly rolls off above it. Other filter types (Chebyshev, elliptic) are sharper but introduce ripple that can create false peaks.</p>
+
+  <p><strong>Why order 4?</strong> A higher-order filter gives a steeper rolloff — it more aggressively removes high-frequency noise. Order 4 is a practical sweet spot: steep enough to clean the signal, but stable and well-behaved numerically.</p>
+
+  <p><strong>Why filtfilt?</strong> A standard filter causes <em>phase distortion</em> — peaks in the filtered signal are shifted in time relative to the original. This would move detected footstrikes away from the true moment of impact. <code>filtfilt</code> applies the filter twice — once forward, once backward — which cancels the phase shift exactly. Peaks stay aligned with the original signal.</p>
+
+  <pre><span class="cmt"># Compute the Nyquist frequency (half the sampling rate)</span>
+<span class="var">nyq</span> = <span class="num">0.5</span> * <span class="var">fs</span>                           <span class="cmt"># e.g. 0.5 × 50 = 25 Hz</span>
+
+<span class="cmt"># Design a 4th-order Butterworth low-pass filter at 3 Hz</span>
+<span class="var">b</span>, <span class="var">a</span> = <span class="fn">butter</span>(<span class="num">4</span>, <span class="num">3.0</span> / <span class="var">nyq</span>, btype=<span class="str">'low'</span>)   <span class="cmt"># b, a are filter coefficients</span>
+
+<span class="cmt"># Apply zero-phase filtering (forward + backward pass)</span>
+<span class="var">df</span>[<span class="str">'filtered'</span>] = <span class="fn">filtfilt</span>(<span class="var">b</span>, <span class="var">a</span>, <span class="var">df</span>[<span class="str">'magnitude'</span>])
+</pre>
+
+  <!-- ── STEP 3 ── -->
+  <h3>Step 3 — Adaptive Peak Detection</h3>
+
+  <div class="algo-step-card">
+    <div class="algo-icon orange">▲</div>
+    <div class="algo-content">
+      <h4>Why: Each local maximum in the filtered signal = one footstrike</h4>
+      <p>After filtering, the signal shows one smooth hump per footstrike. scipy's <code>find_peaks</code> locates all local maxima above a threshold that are sufficiently far apart in time.</p>
+    </div>
+  </div>
+
+  <p>Two key parameters control detection quality:</p>
+
+  <p><strong>Height threshold — adaptive, not fixed:</strong></p>
+  <pre><span class="var">threshold</span> = <span class="var">df</span>[<span class="str">'filtered'</span>].<span class="fn">mean</span>() + <span class="var">df</span>[<span class="str">'filtered'</span>].<span class="fn">std</span>() * <span class="num">0.4</span>
+</pre>
+  <p>The threshold is set at <strong>mean + 0.4 × standard deviation</strong> of the filtered signal. This is adaptive — it automatically scales with how hard the person is walking. Someone walking gently has a lower-amplitude signal; someone walking fast has a higher one. A fixed number (like 1.0 m/s²) would fail on gentle walks or over-detect on vigorous ones. By tying the threshold to the signal's own statistics, it adjusts automatically to each session.</p>
+
+  <p>The 0.4 multiplier was tuned empirically: high enough to avoid counting background noise as steps, low enough to catch every real footstrike even during gentle walking.</p>
+
+  <p><strong>Minimum distance between peaks:</strong></p>
+  <pre><span class="var">min_gap</span> = <span class="fn">int</span>(<span class="var">fs</span> * <span class="num">0.3</span>)   <span class="cmt"># e.g. 50 Hz × 0.3s = 15 samples minimum gap</span>
+
+<span class="var">peaks</span>, _ = <span class="fn">find_peaks</span>(
+    <span class="var">df</span>[<span class="str">'filtered'</span>],
+    height=<span class="var">threshold</span>,      <span class="cmt"># ignore anything below this</span>
+    distance=<span class="var">min_gap</span>       <span class="cmt"># peaks must be at least 0.3s apart</span>
+)
+</pre>
+  <p>The 0.3-second minimum gap enforces a <strong>maximum cadence of 200 steps/min</strong> — which is faster than any realistic walking pace. Without this, a single footstrike that causes two close peaks in the signal (a common artifact) would be counted as two steps. By requiring 0.3s between peaks, we prevent all such double-counts.</p>
+
+  <!-- ── STEP 4 ── -->
+  <h3>Step 4 — Results and Cadence</h3>
+
+  <div class="algo-step-card">
+    <div class="algo-icon purple">✅</div>
+    <div class="algo-content">
+      <h4>Step count, duration, and cadence</h4>
+      <p>The number of detected peaks is the step count. Cadence is derived from that count and the session duration.</p>
+    </div>
+  </div>
+
+  <pre><span class="var">step_count</span> = <span class="fn">len</span>(<span class="var">peaks</span>)
+
+<span class="var">duration</span>   = <span class="fn">float</span>(<span class="var">df</span>[<span class="str">'time'</span>].iloc[-<span class="num">1</span>] - <span class="var">df</span>[<span class="str">'time'</span>].iloc[<span class="num">0</span>])   <span class="cmt"># seconds</span>
+
+<span class="var">cadence</span>    = <span class="var">step_count</span> / (<span class="var">duration</span> / <span class="num">60.0</span>)                 <span class="cmt"># steps per minute</span>
+</pre>
+
+  <p>The result dictionary also contains the sampling rate <code>fs</code>, which is estimated automatically from the median time difference between samples (rather than assuming 50 Hz), making the algorithm robust to irregular sampling.</p>
+
+  <!-- ── FULL CODE ── -->
+  <h3>Complete Detection Function</h3>
+  <p>This is the entire core detection logic in one place — <code>_run_detection(df)</code> in <code>step_detection.py</code>:</p>
+
+  <pre><span class="kw">def</span> <span class="fn">_run_detection</span>(<span class="var">df</span>):
+    <span class="var">df</span> = <span class="var">df</span>.<span class="fn">copy</span>()
+
+    <span class="cmt"># Step 1: 3-axis vector magnitude</span>
+    <span class="var">df</span>[<span class="str">'magnitude'</span>] = np.<span class="fn">sqrt</span>(<span class="var">df</span>[<span class="str">'ax'</span>]**<span class="num">2</span> + <span class="var">df</span>[<span class="str">'ay'</span>]**<span class="num">2</span> + <span class="var">df</span>[<span class="str">'az'</span>]**<span class="num">2</span>)
+
+    <span class="cmt"># Auto-detect sampling rate from median inter-sample interval</span>
+    <span class="var">dt</span> = <span class="var">df</span>[<span class="str">'time'</span>].<span class="fn">diff</span>().<span class="fn">median</span>()
+    <span class="var">fs</span> = <span class="fn">round</span>(<span class="num">1.0</span> / <span class="var">dt</span>) <span class="kw">if</span> <span class="var">dt</span> > <span class="num">0</span> <span class="kw">else</span> <span class="num">50.0</span>
+
+    <span class="cmt"># Step 2: Butterworth low-pass filter at 3 Hz (zero-phase)</span>
+    <span class="var">df</span>[<span class="str">'filtered'</span>] = <span class="fn">_butter_lowpass</span>(<span class="var">df</span>[<span class="str">'magnitude'</span>], cutoff=<span class="num">3.0</span>, fs=<span class="var">fs</span>)
+
+    <span class="cmt"># Step 3: Adaptive threshold + peak detection</span>
+    <span class="var">threshold</span> = <span class="var">df</span>[<span class="str">'filtered'</span>].<span class="fn">mean</span>() + <span class="var">df</span>[<span class="str">'filtered'</span>].<span class="fn">std</span>() * <span class="num">0.4</span>
+    <span class="var">min_gap</span>   = <span class="fn">int</span>(<span class="var">fs</span> * <span class="num">0.3</span>)
+    <span class="var">peaks</span>, _  = <span class="fn">find_peaks</span>(<span class="var">df</span>[<span class="str">'filtered'</span>], height=<span class="var">threshold</span>, distance=<span class="var">min_gap</span>)
+
+    <span class="cmt"># Step 4: Results</span>
+    <span class="var">step_count</span> = <span class="fn">len</span>(<span class="var">peaks</span>)
+    <span class="var">duration</span>   = <span class="fn">float</span>(<span class="var">df</span>[<span class="str">'time'</span>].iloc[-<span class="num">1</span>] - <span class="var">df</span>[<span class="str">'time'</span>].iloc[<span class="num">0</span>])
+    <span class="var">cadence</span>    = <span class="var">step_count</span> / (<span class="var">duration</span> / <span class="num">60.0</span>) <span class="kw">if</span> <span class="var">duration</span> > <span class="num">0</span> <span class="kw">else</span> <span class="num">0.0</span>
+
+    <span class="kw">return</span> {
+        <span class="str">'df'</span>:         <span class="var">df</span>,         <span class="cmt"># DataFrame with magnitude + filtered columns added</span>
+        <span class="str">'peaks'</span>:      <span class="var">peaks</span>,      <span class="cmt"># array of sample indices where steps were detected</span>
+        <span class="str">'steps'</span>:      <span class="var">step_count</span>,
+        <span class="str">'duration_s'</span>: <span class="fn">round</span>(<span class="var">duration</span>, <span class="num">1</span>),
+        <span class="str">'cadence'</span>:    <span class="fn">round</span>(<span class="var">cadence</span>, <span class="num">1</span>),
+        <span class="str">'fs'</span>:         <span class="var">fs</span>,
+        <span class="str">'threshold'</span>:  <span class="fn">round</span>(<span class="var">threshold</span>, <span class="num">4</span>),
+    }
+</pre>
+
+  <!-- ── ALGORITHM VISUAL SUMMARY ── -->
+  <h3>Algorithm Parameter Summary</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Parameter</th><th>Value</th><th>Why this value</th></tr></thead>
+      <tbody>
+        <tr><td>Filter type</td><td>Butterworth (low-pass)</td><td>Maximally flat passband — no distortion of the walking signal</td></tr>
+        <tr><td>Filter order</td><td>4</td><td>Good rolloff steepness without numerical instability</td></tr>
+        <tr><td>Cutoff frequency</td><td>3.0 Hz</td><td>Walking is 1.3–2.3 Hz; noise is typically &gt; 5 Hz</td></tr>
+        <tr><td>Phase correction</td><td>filtfilt (zero-phase)</td><td>Keeps peaks aligned in time — no time-shift artifacts</td></tr>
+        <tr><td>Threshold formula</td><td>mean + 0.4 × std</td><td>Adaptive to signal amplitude — works for slow and fast walking</td></tr>
+        <tr><td>Min peak distance</td><td>0.3 s (= fs × 0.3 samples)</td><td>Prevents double-counting one footstrike, enforces max 200 steps/min</td></tr>
+        <tr><td>Sampling rate (fs)</td><td>Auto-detected from data</td><td>Robustness — does not assume fixed 50 Hz from Phyphox</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- end page -->
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- 5. CADENCE VALIDATION                                             -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="page page-break">
+  <div class="section-label">Section 05</div>
+  <h2>Cadence-Based Validation</h2>
+  <p class="section-intro">How the algorithm validates its own output using physiological walking norms.</p>
+
+  <h3>Why Cadence, Not Direct Comparison?</h3>
+  <p>The natural instinct is to compare our detected step count against Apple Health. But this has a fatal problem: <strong>different time windows.</strong> A 2-minute Phyphox session detects ~216 steps. Apple Health shows 7,700 steps for the full day of April 15th. Comparing these two numbers would give a "97% error" — which is completely meaningless because we are not measuring the same thing.</p>
+  <p>The correct validation is to check whether the detected <strong>cadence</strong> (steps per minute) falls within the physiologically established range for normal human walking. This is independent of session length.</p>
+
+  <div class="verdict-row">
+    <div class="verdict-card">
+      <div class="verdict-badge good">GOOD</div>
+      <div class="verdict-text">
+        <h4>80–140 steps/min</h4>
+        <p>Normal walking pace. Detection is working accurately. Most adults walk between 100–120 steps/min.</p>
+      </div>
+    </div>
+    <div class="verdict-card">
+      <div class="verdict-badge acceptable">ACCEPTABLE</div>
+      <div class="verdict-text">
+        <h4>60–80 or 140–180 steps/min</h4>
+        <p>Slow stroll or brisk/speed walking. Slightly outside typical range but physiologically plausible.</p>
+      </div>
+    </div>
+    <div class="verdict-card">
+      <div class="verdict-badge tuning">NEEDS TUNING</div>
+      <div class="verdict-text">
+        <h4>&lt; 60 or &gt; 180 steps/min</h4>
+        <p>Outside the human range. Algorithm is either missing steps or over-counting. Adjust threshold or filter cutoff.</p>
+      </div>
+    </div>
+  </div>
+
+  <pre><span class="var">cadence</span> = <span class="var">detection</span>[<span class="str">'cadence'</span>]
+
+<span class="kw">if</span> <span class="num">80</span> <= <span class="var">cadence</span> <= <span class="num">140</span>:
+    <span class="var">verdict</span> = <span class="str">'GOOD'</span>
+<span class="kw">elif</span> <span class="num">60</span> <= <span class="var">cadence</span> <= <span class="num">180</span>:
+    <span class="var">verdict</span> = <span class="str">'ACCEPTABLE'</span>
+<span class="kw">else</span>:
+    <span class="var">verdict</span> = <span class="str">'NEEDS TUNING'</span>
+</pre>
+
+  <h3>Apple Health as a Reference (Not a Target)</h3>
+  <p>When a date is provided to the detection pipeline, the Apple Health total for that day is fetched from the database and shown alongside the detection result. It serves as <strong>context</strong> — you can see whether the person was generally active that day — but it is not used to calculate the verdict. The label in the dashboard says "Apple Health (day total)" to make this distinction explicit.</p>
+
+  <h3>Demo Result</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Metric</th><th>Value</th><th>Interpretation</th></tr></thead>
+      <tbody>
+        <tr><td>Steps detected</td><td>216</td><td>From a 120-second simulated walking session</td></tr>
+        <tr><td>Session duration</td><td>120 s</td><td>2-minute walking session</td></tr>
+        <tr><td>Cadence</td><td>108 steps/min</td><td>Squarely within normal walking range (80–140)</td></tr>
+        <tr><td>Sampling rate</td><td>50 Hz</td><td>Auto-detected from phyphox_data.csv timestamps</td></tr>
+        <tr><td>Apple Health (Apr 15)</td><td>7,700 steps</td><td>Full day reference only — not used in verdict</td></tr>
+        <tr><td>Verdict</td><td>GOOD</td><td>108 steps/min is normal human walking cadence</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- end page -->
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- 6. TWO INGESTION PIPELINES                                         -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="page page-break">
+  <div class="section-label">Section 06</div>
+  <h2>The Two Ingestion Pipelines</h2>
+  <p class="section-intro">Both pipelines share the same detection algorithm — only the data source differs.</p>
+
+  <h3>Section 1 — CSV Ingestion (ingestion/csv_ingest.py)</h3>
+
+  <p>This pipeline processes a Phyphox CSV export file that already exists on disk. No network connection to the phone is needed.</p>
+
+  <p><strong>Data flow:</strong> CSV file → <code>load_phyphox()</code> → <code>detect_steps()</code> → cadence verdict → optional Apple Health reference → return result dict</p>
+
+  <p>The <code>load_phyphox()</code> function in <code>step_detection.py</code> handles a subtlety: different Phyphox experiments produce different column names. The "Acceleration (without g)" experiment labels columns as "Acceleration x (m/s^2)", while "Linear Acceleration" labels them "Linear Acceleration x (m/s^2)". The function checks for both <code>'x' in c</code> AND <code>'acceleration' in c</code> (case-insensitive) to handle both variants, plus short aliases <code>ax/ay/az</code> for data generated programmatically.</p>
+
+  <pre><span class="cmt"># ingestion/csv_ingest.py — main entry point</span>
+<span class="kw">def</span> <span class="fn">run</span>(<span class="var">csv_path</span>=<span class="str">'phyphox_data.csv'</span>, <span class="var">date_str</span>=<span class="kw">None</span>, ...):
+
+    <span class="kw">if not</span> os.path.<span class="fn">exists</span>(<span class="var">csv_path</span>):
+        <span class="kw">raise</span> <span class="fn">FileNotFoundError</span>(...)      <span class="cmt"># clear error if file is missing</span>
+
+    <span class="var">detection</span> = sd.<span class="fn">detect_steps</span>(<span class="var">csv_path</span>)   <span class="cmt"># run full algorithm</span>
+
+    <span class="var">cadence</span> = <span class="var">detection</span>[<span class="str">'cadence'</span>]
+    <span class="var">verdict</span> = <span class="str">'GOOD'</span> <span class="kw">if</span> <span class="num">80</span> <= <span class="var">cadence</span> <= <span class="num">140</span> <span class="kw">else</span> \
+              <span class="str">'ACCEPTABLE'</span> <span class="kw">if</span> <span class="num">60</span> <= <span class="var">cadence</span> <= <span class="num">180</span> <span class="kw">else</span> <span class="str">'NEEDS TUNING'</span>
+
+    <span class="kw">if</span> <span class="var">date_str</span>:
+        <span class="var">apple</span> = sd.<span class="fn">apple_health_count</span>(<span class="var">date_str</span>)   <span class="cmt"># query DB for reference</span>
+
+    <span class="kw">return</span> { <span class="str">'steps'</span>: ..., <span class="str">'cadence'</span>: ..., <span class="str">'validation'</span>: { <span class="str">'verdict'</span>: <span class="var">verdict</span> }, ... }
+</pre>
+
+  <p><strong>Command-line usage:</strong></p>
+  <pre>python -m ingestion.csv_ingest phyphox_data.csv 2026-04-15</pre>
+
+  <h3>Section 2 — Live API Ingestion (ingestion/live_ingest.py)</h3>
+
+  <p>This pipeline connects to a running Phyphox instance on the phone and streams accelerometer data in real time while you walk.</p>
+
+  <p><strong>Data flow:</strong> Connect to phone → auto-discover buffer names → poll every 500ms → accumulate DataFrame → detect steps → verdict → save timestamped CSV → return result</p>
+
+  <h4>discover_channels()</h4>
+  <p>Before any data collection, the function calls <code>GET http://phone:8080/config</code>. Phyphox returns a JSON object listing all buffer names for the current experiment. The function searches those names by keyword (<code>'accx'</code>, <code>'linx'</code>, <code>'x'</code> etc.) to automatically find the correct channel names — so the pipeline works with any Phyphox experiment without manual configuration.</p>
+
+  <h4>collect()</h4>
+  <p>Polls <code>GET http://phone:8080/get?linX=&lt;last_t&gt;&amp;linY=&lt;last_t&gt;&amp;linZ=&lt;last_t&gt;</code> every 500ms. The <code>last_t</code> parameter tells Phyphox to return only samples newer than that timestamp — no duplicates. Each response is a JSON object with buffers of new x/y/z values. After the collection window ends, all accumulated arrays are assembled into a pandas DataFrame and passed to <code>detect_steps_from_df()</code>.</p>
+
+  <pre><span class="cmt"># Simplified polling loop</span>
+<span class="var">all_t</span>, <span class="var">all_ax</span>, <span class="var">all_ay</span>, <span class="var">all_az</span> = [], [], [], []
+<span class="var">last_t</span>   = <span class="num">0</span>
+<span class="var">deadline</span> = time.<span class="fn">time</span>() + <span class="var">duration_s</span>
+
+<span class="kw">while</span> time.<span class="fn">time</span>() < <span class="var">deadline</span>:
+    <span class="var">t_buf</span>, <span class="var">ax_buf</span>, ... = <span class="fn">_poll</span>(<span class="var">get_url</span>, <span class="var">ch_x</span>, ..., <span class="var">last_t</span>)  <span class="cmt"># new samples only</span>
+    <span class="var">all_t</span>.<span class="fn">extend</span>(<span class="var">t_buf</span>)
+    <span class="var">last_t</span> = <span class="var">t_buf</span>[-<span class="num">1</span>]
+    time.<span class="fn">sleep</span>(<span class="num">0.5</span>)                                           <span class="cmt"># poll every 500ms</span>
+
+<span class="var">df</span> = pd.<span class="fn">DataFrame</span>({<span class="str">'time'</span>: <span class="var">all_t</span>, <span class="str">'ax'</span>: <span class="var">all_ax</span>, ...})</pre>
+
+  <h3>Mock Server (ingestion/mock_server.py)</h3>
+
+  <p>Phyphox remote access can fail due to iOS Local Network permissions, phone firewall settings, or Private WiFi Address obfuscation. The mock server is a Flask application on port 8080 that serves <code>phyphox_data.csv</code> through the identical HTTP API that Phyphox uses.</p>
+
+  <div class="card-grid cols-3">
+    <div class="card blue">
+      <div class="card-label">GET /config</div>
+      <p>Returns a JSON object with <code>linX</code>, <code>linY</code>, <code>linZ</code>, <code>time</code> as buffer names — exactly what Phyphox returns.</p>
+    </div>
+    <div class="card green">
+      <div class="card-label">GET /get</div>
+      <p>Reads the CSV and streams chunks of data in real time at the correct sampling rate, responding only with samples newer than <code>last_t</code>.</p>
+    </div>
+    <div class="card orange">
+      <div class="card-label">GET /</div>
+      <p>Status page showing elapsed time, samples served, and progress percentage — useful for monitoring a running demo.</p>
+    </div>
+  </div>
+
+  <pre><span class="cmt"># Start the mock server (Terminal 1)</span>
+python -m ingestion.mock_server
+
+<span class="cmt"># Then run the live pipeline against it (Terminal 2)</span>
+python -m ingestion.live_ingest <span class="num">127.0.0.1</span> <span class="num">30</span> <span class="num">2026</span>-<span class="num">04</span>-<span class="num">15</span></pre>
+
+  <div class="warn-box">
+    <p><strong>Note for real phone use:</strong> Both laptop and phone must be on the same WiFi. Open Phyphox → Linear Acceleration → Play → three-dot menu → Allow Remote Access. Go to iPhone Settings → Privacy &amp; Security → Local Network → Phyphox → ON. The IP shown by Phyphox is what to enter in the dashboard.</p>
+  </div>
+
+</div><!-- end page -->
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- 7. WEB DASHBOARD                                                   -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="page page-break">
+  <div class="section-label">Section 07</div>
+  <h2>Web Dashboard</h2>
+  <p class="section-intro">Flask server, REST API, and the JavaScript-driven frontend.</p>
+
+  <h3>Server Entry Point (app.py)</h3>
+  <p>The startup sequence is deliberately simple:</p>
+  <pre><span class="fn">init_db</span>()        <span class="cmt"># create step_records table if it doesn't already exist</span>
+<span class="fn">seed_from_xml</span>()  <span class="cmt"># load Apple Health data — skips if DB already has records</span>
+app.<span class="fn">run</span>(debug=<span class="kw">True</span>)
+</pre>
+  <p>All route definitions are in <code>routes.py</code> and registered as a Flask Blueprint. This separation keeps <code>app.py</code> clean and makes routes independently testable.</p>
+
+  <h3>REST API Endpoints</h3>
+
+  <div class="table-wrap" style="margin-bottom:28px">
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Returns</th></tr></thead>
+      <tbody>
+        <tr><td>GET</td><td><code>/</code></td><td>Renders index.html — the dashboard page</td></tr>
+        <tr><td>GET</td><td><code>/api/today</code></td><td>Today's step total, goal (10,000), and percentage</td></tr>
+        <tr><td>GET</td><td><code>/api/daily</code></td><td>Last 30 days: array of dates and daily totals for bar chart</td></tr>
+        <tr><td>GET</td><td><code>/api/hourly</code></td><td>Average steps per hour of day (0–23) across all data</td></tr>
+        <tr><td>GET</td><td><code>/api/stats</code></td><td>avg_daily, best_day, days_tracked, goal_days counts</td></tr>
+        <tr><td>GET</td><td><code>/api/ingest/csv</code></td><td>Run detection on a CSV file, return steps/cadence/verdict</td></tr>
+        <tr><td>POST</td><td><code>/api/ingest/live</code></td><td>Stream from Phyphox phone, return steps/cadence/verdict</td></tr>
+        <tr><td>POST</td><td><code>/api/ingest</code></td><td>Generic JSON record insertion into the database</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>GET /api/ingest/csv — query parameters</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Parameter</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>file</code></td><td>phyphox_data.csv</td><td>CSV filename in the project root</td></tr>
+        <tr><td><code>date</code></td><td>(none)</td><td>YYYY-MM-DD — enables Apple Health reference from DB</td></tr>
+        <tr><td><code>hour_start</code></td><td>(none)</td><td>Narrow Apple Health window to specific hours</td></tr>
+        <tr><td><code>hour_end</code></td><td>(none)</td><td>End of hour window (exclusive)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>POST /api/ingest/live — JSON body</h4>
+  <pre>{
+  <span class="str">"ip"</span>:         <span class="str">"192.168.1.42"</span>,   <span class="cmt">// required — Phyphox device IP (or 127.0.0.1 for mock)</span>
+  <span class="str">"duration"</span>:   <span class="num">30</span>,               <span class="cmt">// seconds to record (max 60, default 30)</span>
+  <span class="str">"date"</span>:       <span class="str">"2026-04-15"</span>,     <span class="cmt">// optional — Apple Health reference</span>
+  <span class="str">"hour_start"</span>: <span class="num">8</span>,               <span class="cmt">// optional</span>
+  <span class="str">"hour_end"</span>:   <span class="num">10</span>               <span class="cmt">// optional</span>
+}</pre>
+
+  <h3>Frontend Structure</h3>
+
+  <p>The frontend is a single HTML page with no build tooling — just vanilla JavaScript and Chart.js loaded from CDN. On page load, three API calls fire in parallel:</p>
+
+  <pre><span class="fn">loadStats</span>()      <span class="cmt">// → /api/stats  → fills the 4 stat cards</span>
+<span class="fn">loadToday</span>()      <span class="cmt">// → /api/today  → fills progress bar</span>
+<span class="fn">loadDailyChart</span>() <span class="cmt">// → /api/daily  → builds Chart.js bar chart</span></pre>
+
+  <p>The Step Detection card uses two tabs (CSV File / Live API) toggled by <code>switchTab(tab)</code>. The CSV run button calls <code>runCsv()</code> which fires a GET request and shows a loading state. The Live button calls <code>runLive()</code> which fires a POST and simultaneously animates a progress bar with a countdown timer — giving visual feedback during the 30-second collection window.</p>
+
+  <p>Results are rendered by <code>showResults(data)</code>, which reads <code>data.validation.verdict</code> and applies the corresponding CSS class (<code>.verdict-good</code>, <code>.verdict-acceptable</code>, <code>.verdict-needs-tuning</code>) to the badge element for color-coding.</p>
+
+  <h3>Dashboard Layout</h3>
+
+  <div class="card-grid cols-2">
+    <div class="card blue">
+      <div class="card-label">Header</div>
+      <p>StepTrack logo with animated pulsing "LIVE DATA" badge. Indicates the dashboard is showing real data from the database.</p>
+    </div>
+    <div class="card green">
+      <div class="card-label">Stats Grid</div>
+      <p>Four cards: Avg Daily Steps, Best Day, Days Tracked, Goal Days (days with ≥ 10,000 steps). Data from <code>/api/stats</code>.</p>
+    </div>
+    <div class="card orange">
+      <div class="card-label">Today's Progress</div>
+      <p>Animated progress bar toward the 10,000-step goal. Color changes: green ≥ 10k, blue ≥ 5k, orange otherwise.</p>
+    </div>
+    <div class="card red">
+      <div class="card-label">Daily Chart</div>
+      <p>30-day bar chart via Chart.js. Bars are color-coded: green ≥ 10k steps, blue ≥ 5k, orange otherwise.</p>
+    </div>
+  </div>
+
+</div><!-- end page -->
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- 8. HOW TO RUN                                                      -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div class="page page-break">
+  <div class="section-label">Section 08</div>
+  <h2>How to Run the Project</h2>
+  <p class="section-intro">Step-by-step instructions for every mode of operation.</p>
+
+  <h3>Installation (first time only)</h3>
+  <pre>pip install -r requirements.txt</pre>
+
+  <p>This installs Flask, scipy, numpy, pandas, requests, and matplotlib. All versions are pinned in <code>requirements.txt</code>.</p>
+
+  <h3>Starting the Dashboard</h3>
+  <pre>python app.py</pre>
+  <p>Then open <code>http://127.0.0.1:5000</code> in a browser. On first launch, the Apple Health XML data is automatically loaded into the database. Subsequent launches skip the seeding step.</p>
+
+  <h3>Running CSV Detection via Command Line</h3>
+  <pre><span class="cmt"># Basic — just detection, no comparison</span>
+python -m ingestion.csv_ingest
+
+<span class="cmt"># With Apple Health comparison for a specific date</span>
+python -m ingestion.csv_ingest phyphox_data.csv 2026-04-15
+
+<span class="cmt"># With hour window (compare 8am–10am only)</span>
+python -m ingestion.csv_ingest phyphox_data.csv 2026-04-15 8 10</pre>
+
+  <h3>Live Demo with Mock Server (no phone needed)</h3>
+  <pre><span class="cmt"># Terminal 1 — start the fake Phyphox server</span>
+python -m ingestion.mock_server
+
+<span class="cmt"># Terminal 2 — start the Flask dashboard</span>
+python app.py</pre>
+  <p>Go to <code>http://127.0.0.1:5000</code> → Step Detection card → Live API tab → Phone IP: <code>127.0.0.1</code> → Duration: 30 → click Start Live.</p>
+
+  <h3>Live Detection with a Real Phone</h3>
+  <ol style="margin-left:20px; margin-bottom:20px">
+    <li style="margin-bottom:8px">Open <strong>Phyphox</strong> on iPhone → choose <strong>Linear Acceleration</strong> experiment → tap Play</li>
+    <li style="margin-bottom:8px">Tap the three-dot menu (top right) → <strong>Allow Remote Access</strong></li>
+    <li style="margin-bottom:8px">Note the IP address shown (e.g. <code>192.168.1.42:8080</code>)</li>
+    <li style="margin-bottom:8px">On iPhone: Settings → Privacy &amp; Security → Local Network → <strong>Phyphox → ON</strong></li>
+    <li style="margin-bottom:8px">In the dashboard: Live API tab → enter the IP (without the port) → Start Live → walk</li>
+  </ol>
+
+  <h3>Running the Algorithm Directly</h3>
+  <pre><span class="cmt"># Runs detection on phyphox_data.csv and saves step_detection.png</span>
+python step_detection.py
+
+<span class="cmt"># With a custom CSV file</span>
+python step_detection.py my_recording.csv 2026-04-15</pre>
+
+  <h3>Key Design Decisions — Q&amp;A Preparation</h3>
+
+  <div class="card-grid cols-2">
+    <div class="card blue">
+      <div class="card-label">Why SQLite?</div>
+      <p>No server to install. Single file — portable, copyable, version-controllable. Sufficient for a single-user prototype with thousands of records.</p>
+    </div>
+    <div class="card green">
+      <div class="card-label">Why cadence validation?</div>
+      <p>A 2-minute session cannot be compared against a full-day total. Cadence validation is fair regardless of session length — it checks if the walking pace is humanly plausible.</p>
+    </div>
+    <div class="card orange">
+      <div class="card-label">Why vector magnitude?</div>
+      <p>Phone orientation is unpredictable. √(ax²+ay²+az²) gives the same result regardless of which way the phone faces — orientation-invariant by construction.</p>
+    </div>
+    <div class="card red">
+      <div class="card-label">Why filtfilt?</div>
+      <p>A standard one-pass filter shifts peaks in time. filtfilt applies the filter twice (forward + backward), cancelling all phase shift. Peaks stay at the correct timestamps.</p>
+    </div>
+    <div class="card purple">
+      <div class="card-label">Why adaptive threshold?</div>
+      <p>A fixed threshold (e.g. 1.0 m/s²) fails on gentle walks or high-amplitude runs. Mean + 0.4×std adapts automatically to each session's signal strength.</p>
+    </div>
+    <div class="card blue">
+      <div class="card-label">Why a mock server?</div>
+      <p>iOS blocks local network access without explicit permission, which can silently fail. The mock server makes the live pipeline fully demonstrable without phone dependency.</p>
+    </div>
+  </div>
+
+</div><!-- end page -->
+
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- BACK COVER                                                         -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<div style="background: linear-gradient(160deg, #0d1117 0%, #0d1f33 100%); min-height: 40vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 80px; page-break-before: always;">
+  <div style="font-size:11px; letter-spacing:0.25em; text-transform:uppercase; color: var(--blue); margin-bottom:20px">Smart City Project B1 · Final Documentation</div>
+  <div style="font-size:52px; font-weight:700; color:#fff; margin-bottom:14px">StepTrack</div>
+  <div style="font-size:16px; color: var(--muted); margin-bottom:52px">End-to-end smartphone step detection &amp; activity visualization</div>
+
+  <div style="display:flex; gap:60px; justify-content:center; margin-bottom:52px">
+    <div style="text-align:center">
+      <div style="font-size:44px; font-weight:700; color:var(--blue)">720</div>
+      <div style="font-size:12px; color:var(--muted); margin-top:4px; text-transform:uppercase; letter-spacing:0.1em">DB records</div>
+    </div>
+    <div style="text-align:center">
+      <div style="font-size:44px; font-weight:700; color:var(--green)">216</div>
+      <div style="font-size:12px; color:var(--muted); margin-top:4px; text-transform:uppercase; letter-spacing:0.1em">Steps detected</div>
+    </div>
+    <div style="text-align:center">
+      <div style="font-size:44px; font-weight:700; color:var(--orange)">108</div>
+      <div style="font-size:12px; color:var(--muted); margin-top:4px; text-transform:uppercase; letter-spacing:0.1em">Steps / min</div>
+    </div>
+    <div style="text-align:center">
+      <div style="font-size:44px; font-weight:700; color:var(--red)">4</div>
+      <div style="font-size:12px; color:var(--muted); margin-top:4px; text-transform:uppercase; letter-spacing:0.1em">Phases complete</div>
+    </div>
+  </div>
+
+  <div style="width:80px; height:1px; background:rgba(88,166,255,0.2); margin:0 auto 24px"></div>
+  <div style="font-size:14px; color:var(--muted)"><span style="color:var(--text)">Hadir Helali</span> &nbsp;·&nbsp; <span style="color:var(--text)">Balkis Karoui</span> &nbsp;|&nbsp; May 2026</div>
+</div>
+
+</body>
+</html>
